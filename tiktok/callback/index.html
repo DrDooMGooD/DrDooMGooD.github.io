@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Connecting TikTok · UGC Ad Factory</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<main>
+  <h1>Connecting your TikTok account</h1>
+  <p id="status" class="muted">Returning you to UGC Ad Factory on this computer…</p>
+  <p class="muted">TikTok requires an https sign-in return address, so it sends you here first. This page passes the
+    sign-in result straight to the app running on your own computer (127.0.0.1) and stores nothing.</p>
+</main>
+<script>
+  (function () {
+    // Forward only the parameters TikTok sends back, and only to the app on this computer.
+    var incoming = new URLSearchParams(window.location.search);
+    var outgoing = new URLSearchParams();
+    ["code", "state", "scopes", "error", "error_description"].forEach(function (name) {
+      if (incoming.has(name)) outgoing.set(name, incoming.get(name));
+    });
+    if (!outgoing.has("state")) {
+      document.getElementById("status").textContent =
+        "This page only works as part of connecting TikTok from UGC Ad Factory.";
+      return;
+    }
+    window.location.replace("http://127.0.0.1:8000/tiktok/callback?" + outgoing.toString());
+  })();
+</script>
+</body>
+</html>
